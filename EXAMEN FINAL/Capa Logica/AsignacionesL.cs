@@ -22,7 +22,7 @@ namespace EXAMEN_FINAL.Capa_Logica
                     {
                         CommandType = CommandType.StoredProcedure
                     };
-                    cmd.Parameters.Add(new SqlParameter("EmpleadoId", EmpleadoId));
+                    cmd.Parameters.Add(new SqlParameter("@EmpleadoId", EmpleadoId));
                     cmd.Parameters.Add(new SqlParameter("@ProyectoId", ProyectoId));
                     cmd.Parameters.Add(new SqlParameter("@FechaAsignacion", FechaAsignacion));
                     

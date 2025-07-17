@@ -30,36 +30,110 @@ namespace EXAMEN_FINAL.Capa_Vista
         //METODO PARA INGRESAR PROYECTOS
         protected void bAgregar1_Click(object sender, EventArgs e)
         {
-            clsProyectos.Codigo = tCodigo.Text;
-            clsProyectos.Nombre = tNombre.Text;
-            clsProyectos.FechaInicio = tFechaInicio.Text;
-            clsProyectos.FechaFin = tFechaFin.Text;
-           
-            if (ProyectosL.IngresarProyecto(clsProyectos.Codigo, clsProyectos.Nombre, clsProyectos.FechaInicio, clsProyectos.FechaFin) > 0)
+            try
             {
+                // Validate required fields
+                if (string.IsNullOrWhiteSpace(tCodigo.Text) || 
+                    string.IsNullOrWhiteSpace(tNombre.Text) || 
+                    string.IsNullOrWhiteSpace(tFechaInicio.Text))
+                {
+                    MostrarAlerta(this, "Por favor complete todos los campos obligatorios");
+                    return;
+                }
 
-                MostrarAlerta(this, "----Proyecto Ingresado Correctamente----");
-                LlenarGrid();
+                // Validate dates
+                if (!DateTime.TryParse(tFechaInicio.Text, out DateTime fechaInicio))
+                {
+                    MostrarAlerta(this, "Por favor ingrese una fecha de inicio válida");
+                    return;
+                }
+
+                if (!string.IsNullOrWhiteSpace(tFechaFin.Text))
+                {
+                    if (!DateTime.TryParse(tFechaFin.Text, out DateTime fechaFin))
+                    {
+                        MostrarAlerta(this, "Por favor ingrese una fecha de fin válida");
+                        return;
+                    }
+
+                    if (fechaFin <= fechaInicio)
+                    {
+                        MostrarAlerta(this, "La fecha de fin debe ser posterior a la fecha de inicio");
+                        return;
+                    }
+                }
+
+                var proyecto = new clsProyectos(
+                    tCodigo.Text.Trim(),
+                    tNombre.Text.Trim(),
+                    tFechaInicio.Text,
+                    tFechaFin.Text
+                );
+
+                if (ProyectosL.IngresarProyecto(proyecto.Codigo, proyecto.Nombre, proyecto.FechaInicio, proyecto.FechaFin) > 0)
+                {
+                    MostrarAlerta(this, "Proyecto ingresado correctamente");
+                    LimpiarCampos();
+                    LlenarGrid();
+                }
+                else
+                {
+                    MostrarAlerta(this, "Error al ingresar proyecto. Verifique que el código y nombre sean únicos.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MostrarAlerta(this, "Error al ingresar Proyecto :(...");
+                MostrarAlerta(this, "Error inesperado: " + ex.Message);
             }
         }
         //METODO PARA BORRAR PROYECTOS
         protected void bBorrar1_Click(object sender, EventArgs e)
         {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(tID.Text))
+                {
+                    MostrarAlerta(this, "Por favor ingrese el ID del proyecto a eliminar");
+                    return;
+                }
 
-            clsProyectos.Id = int.Parse(tID.Text);
-            if (ProyectosL.BorrarProyecto(clsProyectos.Id) > 0)
-            {
-                MostrarAlerta(this, "----Proyecto Eliminado Correctamente----");
-                LlenarGrid();
+                if (!int.TryParse(tID.Text, out int proyectoId))
+                {
+                    MostrarAlerta(this, "El ID debe ser un número válido");
+                    return;
+                }
+
+                if (ProyectosL.BorrarProyecto(proyectoId) > 0)
+                {
+                    MostrarAlerta(this, "Proyecto eliminado correctamente");
+                    LimpiarCampos();
+                    LlenarGrid();
+                }
+                else
+                {
+                    MostrarAlerta(this, "Error al eliminar proyecto. Verifique que el ID exista y que no tenga asignaciones activas.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MostrarAlerta(this, "Error al Eliminar Proyecto :(...");
+                MostrarAlerta(this, "Error inesperado: " + ex.Message);
             }
+        }
+
+        // Helper method to clear form fields
+        private void LimpiarCampos()
+        {
+            tID.Text = "";
+            tCodigo.Text = "";
+            tNombre.Text = "";
+            tFechaInicio.Text = "";
+            tFechaFin.Text = "";
+        }
+
+        // Button event handler for clearing fields
+        protected void bLimpiar_Click(object sender, EventArgs e)
+        {
+            LimpiarCampos();
         }
 
         protected void LlenarGrid()

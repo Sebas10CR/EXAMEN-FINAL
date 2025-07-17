@@ -10,10 +10,26 @@ namespace EXAMEN_FINAL.Capa_Logica
     {
         public static SqlConnection obtenerConexion()
         {
-            string s = System.Configuration.ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
-            SqlConnection conexion = new SqlConnection(s);
-            conexion.Open();
-            return conexion;
+            try
+            {
+                string s = System.Configuration.ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
+                if (string.IsNullOrEmpty(s))
+                {
+                    throw new InvalidOperationException("La cadena de conexión no está configurada correctamente.");
+                }
+                
+                SqlConnection conexion = new SqlConnection(s);
+                conexion.Open();
+                return conexion;
+            }
+            catch (SqlException ex)
+            {
+                throw new InvalidOperationException($"Error al conectar con la base de datos: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Error inesperado al establecer la conexión: {ex.Message}", ex);
+            }
         }
     }
 }
