@@ -7,10 +7,22 @@ namespace EXAMEN_FINAL.Capa_Modelo
 {
     public class clsAsignaciones
     {
-        public static int Id { get; set; }
-        public static int EmpleadoId { get; set; }
-        public static int ProyectoId { get; set; }
-        public static string FechaAsignacion { get; set; }
-        
+        public int Id { get; set; }
+        public int EmpleadoId { get; set; }
+        public int ProyectoId { get; set; }
+        public string FechaAsignacion { get; set; }
+
+        // Constructor with default values
+        public clsAsignaciones()
+        {
+        }
+
+        // Constructor with parameters
+        public clsAsignaciones(int empleadoId, int proyectoId, string fechaAsignacion)
+        {
+            EmpleadoId = empleadoId;
+            ProyectoId = proyectoId;
+            FechaAsignacion = fechaAsignacion;
+        }
     }
 }

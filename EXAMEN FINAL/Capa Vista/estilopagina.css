@@ -5,7 +5,6 @@
     padding: 0;
 }
 
-
 h1 {
     text-align: center;
     color: #333;
@@ -13,9 +12,17 @@ h1 {
     margin-bottom: 20px;
 }
 
+h3 {
+    color: #3399FF;
+    font-size: 18px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #3399FF;
+    padding-bottom: 5px;
+}
 
 .section {
-    width: 80%;
+    width: 90%;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
@@ -23,87 +30,143 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-
-.grid-container {
+.grid-container, .grid-container2 {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    overflow-x: auto;
 }
 
-.grid-container2 {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-input[type="text"], .aspNetHidden {
+.grid-view {
+    border-collapse: collapse;
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.grid-view th, .grid-view td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.grid-view th {
+    background-color: #3399FF;
+    color: white;
+    font-weight: bold;
+}
+
+.grid-view tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
+.grid-view tr:hover {
+    background-color: #f1f1f1;
+}
+
+.form-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+input[type="text"], input[type="date"], input[type="number"], input[type="email"], select, .aspNetHidden {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+}
+
+input[type="text"]:focus, input[type="date"]:focus, input[type="number"]:focus, input[type="email"]:focus, select:focus {
+    outline: none;
+    border-color: #3399FF;
+    box-shadow: 0 0 5px rgba(51, 153, 255, 0.3);
+}
 
 label {
     font-size: 14px;
     color: #333;
     margin-bottom: 5px;
     display: block;
+    font-weight: bold;
 }
 
+.required {
+    color: #ff0000;
+    font-weight: bold;
+}
 
-select {
-    padding: 10px;
+.required-note {
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #f9f9f9;
 }
 
+.error-message {
+    color: #ff0000;
+    font-size: 12px;
+    margin-bottom: 10px;
+    display: block;
+}
 
 .buttons {
     display: flex;
     justify-content: space-between;
+    gap: 10px;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
-
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #3399FF;
-    color: white;
+.buttons input[type="submit"] {
+    flex: 1;
+    min-width: 100px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: bold;
     border: 1px solid #ccc;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
 }
 
-    button:hover {
-        background-color: #1E72CC;
+.buttons input[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .section {
+        width: 95%;
+        padding: 15px;
     }
-
-
-table {
-    width: 100%;
-    margin-top: 30px;
-    border-collapse: collapse;
-    background-color: #f9f9f9;
+    
+    .buttons {
+        flex-direction: column;
+    }
+    
+    .buttons input[type="submit"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .grid-container, .grid-container2 {
+        overflow-x: auto;
+    }
 }
 
-th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-th {
-    background-color: #3399FF;
-    color: white;
-}
-
-tr:hover {
-    background-color: #f1f1f1;
+/* Table responsiveness */
+@media (max-width: 600px) {
+    .grid-view {
+        font-size: 12px;
+    }
+    
+    .grid-view th, .grid-view td {
+        padding: 6px;
+    }
 }
